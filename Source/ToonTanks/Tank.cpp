@@ -6,6 +6,7 @@
 #include "Camera/CameraComponent.h"
 #include "Components/InputComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "DrawDebugHelpers.h"
 
 ATank::ATank(){
 	PrimaryActorTick.bCanEverTick = true;
@@ -24,6 +25,42 @@ void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent){
     PlayerInputComponent->BindAxis(TEXT("MoveForward"), this, &ATank::Move);
     PlayerInputComponent->BindAxis(TEXT("Turn"), this, &ATank::Turn);
 }
+
+// Called every frame
+void ATank::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+    if(PLayerControllerRef){
+        FHitResult HitResult;
+        PLayerControllerRef->GetHitResultUnderCursor(
+            ECollisionChannel::ECC_Visibility,
+            false,
+            HitResult);
+
+        // DrawDebugSphere(
+        //     GetWorld(),
+        //     HitResult.ImpactPoint,
+        //     25.f,
+        //     12,
+        //     FColor::Green,
+        //     false,
+        //     -1.f);
+
+       RotateTurret(HitResult.ImpactPoint); 
+    }
+
+}
+
+
+void ATank::BeginPlay()
+{
+	Super::BeginPlay();
+
+    PLayerControllerRef = Cast<APlayerController>(GetController());
+	
+}
+
 
 void ATank::Move(float Value){
     // UE_LOG(LogTemp, Warning, TEXT("Value : %f"),Value);

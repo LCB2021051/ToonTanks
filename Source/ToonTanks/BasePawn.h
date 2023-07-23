@@ -15,12 +15,8 @@ public:
 	// Sets default values for this pawn's properties
 	ABasePawn();
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess="true"))
-	float VisibleAnywhere_BlueprintReadWrite= 100;
-
 protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
+	void RotateTurret(FVector LookAtTarget);
 
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta=(AllowPrivateAccess="true"))
@@ -36,8 +32,7 @@ private:
 	class USceneComponent* ProjectileSpawnPoint;
 
 public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+
 
 
 };
