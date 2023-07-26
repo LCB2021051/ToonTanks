@@ -3,6 +3,9 @@
 
 #include "Projectile.h"
 #include "Components/StaticMeshComponent.h"
+#include "GameFramework/ProjectileMovementComponent.h"
+#include "GameFramework/DamageType.h"
+#include "kismet/GameplayStatics.h"
 
 
 // Sets default values
@@ -13,6 +16,10 @@ AProjectile::AProjectile()
 
 	ProjectileMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Projectile Mesh"));
 	RootComponent = ProjectileMesh;
+
+	ProjectileMovementComponent = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("Movement Component"));
+	ProjectileMovementComponent->InitialSpeed = initial_speed;
+	ProjectileMovementComponent->MaxSpeed = max_speed;
 }
 
 // Called when the game starts or when spawned
@@ -20,6 +27,7 @@ void AProjectile::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	ProjectileMesh->OnComponentHit.AddDynamic(this, &AProjectile::OnHit);
 }
 
 // Called every frame
@@ -29,3 +37,20 @@ void AProjectile::Tick(float DeltaTime)
 
 }
 
+void AProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,FVector NormalImpulse, const FHitResult& Hit){
+	auto MyOwner = GetOwner();
+	if(MyOwner == nullptr)return ;
+
+	auto MyOwnerInstigator = MyOwner->GetInstigatorController();
+	auto DamageTypeClass = UDamageType::StaticClass();
+
+	if(OtherActor && OtherActor != this && OtherActor != MyOwner){ //Owner is either Tank or Tower
+		UGameplayStatics::ApplyDamage(
+			OtherActor, //damaged actor
+			Damage, //float
+			MyOwnerInstigator, // controller associated
+			this, // damage causer
+			DamageTypeClass);//type of damage
+	}
+
+}

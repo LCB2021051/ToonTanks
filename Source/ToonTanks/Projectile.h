@@ -23,6 +23,22 @@ private:
 	UPROPERTY(EditDefaultsOnly,Category="Combat")
 	UStaticMeshComponent* ProjectileMesh;
 
+	UPROPERTY(EditAnywhere, Category="Movement")
+	class UProjectileMovementComponent* ProjectileMovementComponent;
+
+	UPROPERTY(EditAnywhere)
+	float initial_speed=100.f;
+
+	UPROPERTY(EditAnywhere)
+	float max_speed=500.f;
+
+	UFUNCTION()
+	void OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,FVector NormalImpulse, const FHitResult& Hit);
+
+	UPROPERTY(EditAnywhere)
+	float Damage;
+
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
