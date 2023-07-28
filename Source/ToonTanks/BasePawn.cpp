@@ -29,6 +29,11 @@ ABasePawn::ABasePawn()
 
 // Called when the game starts or when spawned
 
+void ABasePawn:: HandleDestruction(){
+	//todo : visual and sound effects
+}
+
+
 
 void ABasePawn::RotateTurret(FVector LookAtTarget){
 	FVector ToTarget = LookAtTarget - TurretMesh->GetComponentLocation();

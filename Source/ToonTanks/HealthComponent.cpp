@@ -3,6 +3,7 @@
 
 #include "HealthComponent.h"
 #include "kismet/GameplayStatics.h"
+#include "ToonTanksGameMode.h"
 
 
 // Sets default values for this component's properties
@@ -25,7 +26,9 @@ void UHealthComponent::BeginPlay()
 	health=max_health;
 	
 	//Deligate is used to bind events related to owner with class functions
-	GetOwner()->OnTakeAnyDamage.AddDynamic(this, &UHealthComponent::DamageTaken); // ontake damage is triggered when ApplyDamage() function is called  
+	GetOwner()->OnTakeAnyDamage.AddDynamic(this, &UHealthComponent::DamageTaken); // ontake damage is triggered when ApplyDamage() function is called
+	
+	ToonTanksGameMode = Cast<AToonTanksGameMode>(UGameplayStatics::GetGameMode(this));
 }
 
 
@@ -37,10 +40,13 @@ void UHealthComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 	// ...
 }
 
-void UHealthComponent::DamageTaken(AActor* DamageActor, float Damage, const UDamageType* DamageType, class AController* Instigator, AActor* DamageCauser)
+void UHealthComponent::DamageTaken(AActor* DamagedActor, float Damage, const UDamageType* DamageType, class AController* Instigator, AActor* DamageCauser)
 {
 	if (Damage <= 0.f) return;
-	health-=Damage;
 
-	UE_LOG(LogTemp, Warning, TEXT("Health: %f"),health);
+	health -= Damage;
+
+	if (health<=0.f && ToonTanksGameMode){
+		ToonTanksGameMode->ActorDied(DamagedActor);
+	}
 }

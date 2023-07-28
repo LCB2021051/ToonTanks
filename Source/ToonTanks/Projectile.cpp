@@ -41,7 +41,7 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimi
 	auto MyOwner = GetOwner();
 	if(MyOwner == nullptr)return ;
 
-	auto MyOwnerInstigator = MyOwner->GetInstigatorController();
+	auto MyOwnerInstigator = MyOwner->GetInstigatorController(); //player
 	auto DamageTypeClass = UDamageType::StaticClass();
 
 	if(OtherActor && OtherActor != this && OtherActor != MyOwner){ //Owner is either Tank or Tower
@@ -51,6 +51,8 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimi
 			MyOwnerInstigator, // controller associated
 			this, // damage causer
 			DamageTypeClass);//type of damage
+
+		Destroy();
 	}
 
 }

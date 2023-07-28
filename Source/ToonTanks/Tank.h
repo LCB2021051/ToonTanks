@@ -22,6 +22,10 @@ class TOONTANKS_API ATank : public ABasePawn
 		// Called to bind functionality to input
 		virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+		void HandleDestruction();
+
+		APlayerController* GetTankPLayerController() const {return TankPlayerController;}
+
 	protected:
 		virtual void BeginPlay() override;
 
@@ -35,11 +39,11 @@ class TOONTANKS_API ATank : public ABasePawn
 
 		UPROPERTY(EditAnywhere,Category="Movement")
 		float Speed = 200.f;
-		UPROPERTY(EditAnywhere,Category="Rotation")
+		UPROPERTY(EditAnywhere,Category="Movement")
 		float TurnRate = 45.f;
 
 		void Move(float Value);
 		void Turn(float Value);
 
-		APlayerController* PLayerControllerRef;
+		APlayerController* TankPlayerController;
 };
