@@ -31,6 +31,24 @@ ABasePawn::ABasePawn()
 
 void ABasePawn:: HandleDestruction(){
 	//todo : visual and sound effects
+	if(Explosion){
+		UGameplayStatics::SpawnEmitterAtLocation(
+			this,
+			Explosion,
+			GetActorLocation(),
+			GetActorRotation()
+		);
+	}
+	if(DeathSound){
+		UGameplayStatics::PlaySoundAtLocation(
+			this,
+			DeathSound,
+			GetActorLocation()
+		);
+	}
+	if(DeathCameraShakeClass){
+		GetWorld()->GetFirstPlayerController()->ClientStartCameraShake(DeathCameraShakeClass);
+	}
 }
 
 
