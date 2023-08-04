@@ -26,6 +26,8 @@ class TOONTANKS_API ATank : public ABasePawn
 
 		APlayerController* GetTankPLayerController() const {return TankPlayerController;}
 
+		bool bAlive = true;
+
 	protected:
 		virtual void BeginPlay() override;
 

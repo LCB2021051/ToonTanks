@@ -74,7 +74,7 @@ void ABasePawn::Fire(){
     //     FColor::Green,
     //     false,
     //     3.f);	
-	auto projectile = GetWorld()->SpawnActor<class AProjectile>(
+	AProjectile* projectile = GetWorld()->SpawnActor<class AProjectile>(
 		ProjectileClass,
 		ProjectileSpawnPoint->GetComponentLocation(),
 		ProjectileSpawnPoint->GetComponentRotation());
